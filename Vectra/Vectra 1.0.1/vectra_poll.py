@@ -1,16 +1,16 @@
 '''
 Copyright © 2020 Forescout Technologies, Inc.
- 
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
- 
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
- 
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -48,7 +48,7 @@ URL = params["connect_vectra_url"] # Server URL
 TOKEN = params["connect_vectra_token_id"]  # Token ID
 
 # Prepare request
-GET_URL = URL + '/search/hosts/?page_size=1000&query_string=host.state:"active"'
+GET_URL = URL + '/search/hosts/?page_size=1000&&query_string=host.last_detection_timestamp:[now-30d%20TO%20now]'
 DEVICE_HEADER = {"Content-Type": "application/json", "Authorization": "Token " + str(TOKEN)}
 REQUEST = urllib.request.Request(GET_URL, headers=DEVICE_HEADER)
 
@@ -75,7 +75,19 @@ ENDPOINTS = []
 for endpoint_data in REQUEST_RESPONSE["results"]:
     endpoint = {}
     user_ip = endpoint_data["last_source"]
-    endpoint["ip"] = user_ip
+
+    mac_found = False
+    user_mac = ""
+    for host_artifact in endpoint_data["host_artifact_set"]:
+        if host_artifact["type"] == "mac":
+            user_mac = host_artifact["value"].replace(':', '')
+            mac_found = True
+
+    if mac_found:
+        endpoint["mac"] = user_mac
+    else:
+        endpoint["ip"] = user_ip
+
     list_property_detection = []
 
     # for each threat detection, output will be a list of endpoint threat detection

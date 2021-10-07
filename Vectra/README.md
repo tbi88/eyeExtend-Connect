@@ -2,7 +2,7 @@
 eyeExtend Connect App for Vectra - Gain visibility of threats discovered by Vectra on the Forescout Platform
 
 ## Versions
-1.0.0
+1.0.1
 
 ## Configurations
 ### Connection

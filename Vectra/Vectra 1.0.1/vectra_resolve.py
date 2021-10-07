@@ -1,16 +1,16 @@
 '''
 Copyright © 2020 Forescout Technologies, Inc.
- 
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
- 
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
- 
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -49,7 +49,7 @@ TOKEN = params["connect_vectra_token_id"]  # Token ID
 #resolve the properties. If not, they will not be found in the params dictionary.
 if "ip" in params:
         # Prepare request
-        GET_URL = URL + "/search/hosts/?page_size=1000&query_string=host.state:\"active\"%20and%20host.last_source:\"" + params["ip"] +"\""
+        GET_URL = URL + "/search/hosts/?page_size=1000&query_string=host.last_source:\"" + params["ip"] +"\""
         DEVICE_HEADER = {"Content-Type": "application/json; charset=utf-8", "Authorization": "Token " + str(TOKEN)}
         # Get HOST data
         REQUEST = urllib.request.Request(GET_URL, headers=DEVICE_HEADER)
